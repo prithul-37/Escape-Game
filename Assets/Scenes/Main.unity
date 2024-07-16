@@ -267,7 +267,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -487,7 +487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   filter: {fileID: 27970849}
   brushRadius: 1
-  brushStrength: 0.1
+  brushStrength: 2
   gridSize: 80
   gridScale: 0.2
   isoValue: 1.1

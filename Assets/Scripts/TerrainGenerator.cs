@@ -35,6 +35,7 @@ public class TerrainGenerator : MonoBehaviour
     }
     private void Start()
     {
+        Application.targetFrameRate = 60;
         grid = new float[gridSize,gridSize];
 
         for (int i = 0; i < grid.GetLength(0); i++)
@@ -67,7 +68,10 @@ public class TerrainGenerator : MonoBehaviour
                 Vector2Int currentGridPosition = new Vector2Int(i,j);
                 if(!IsValidGridPosition(currentGridPosition)) continue;
 
-                grid[currentGridPosition.x, currentGridPosition.y] -= brushStrength;
+                float distance = Vector2.Distance(currentGridPosition, gridPosition);
+                float factor = Mathf.Exp(-distance * brushStrength/brushRadius);
+
+                grid[currentGridPosition.x, currentGridPosition.y] -= factor;
             }
         }
 
