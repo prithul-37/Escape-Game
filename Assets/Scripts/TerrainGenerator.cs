@@ -16,6 +16,7 @@ public class TerrainGenerator : MonoBehaviour
     [Header("Brush Details")]
     [SerializeField] int brushRadius;
     [SerializeField] float brushStrength;
+    [SerializeField] float brushFallback;
 
     [Header("Grid Info")]
     [SerializeField] int gridSize;
@@ -29,12 +30,15 @@ public class TerrainGenerator : MonoBehaviour
 
     private float[,] grid;
 
+    Mesh mesh;
+
     private void Awake()
     {
         InputManager.Ontouching += TouchingCallBack;
     }
     private void Start()
     {
+        mesh = new Mesh();
         Application.targetFrameRate = 60;
         grid = new float[gridSize,gridSize];
 
@@ -55,11 +59,13 @@ public class TerrainGenerator : MonoBehaviour
 
     void TouchingCallBack(Vector3 worldPosition)
     {
-        Debug.Log("World Position :" + worldPosition);
+        //Debug.Log("World Position :" + worldPosition);
 
         worldPosition.z = 0;
 
         Vector2Int gridPosition = GetGridPositionFromWorldPosition(worldPosition);
+
+        bool shouldGenerate = false;
 
         for(int i=gridPosition.x - brushRadius; i<= gridPosition.x + brushRadius; i++)
         {
@@ -69,13 +75,15 @@ public class TerrainGenerator : MonoBehaviour
                 if(!IsValidGridPosition(currentGridPosition)) continue;
 
                 float distance = Vector2.Distance(currentGridPosition, gridPosition);
-                float factor = Mathf.Exp(-distance * brushStrength/brushRadius);
+                float factor = brushStrength * Mathf.Exp(-distance * brushFallback / brushRadius);
 
                 grid[currentGridPosition.x, currentGridPosition.y] -= factor;
+
+                shouldGenerate = true;
             }
         }
-
-        GenerateMesh();
+        if(shouldGenerate)
+            GenerateMesh();
 
         /*if(gridPosition.x>=0 && gridPosition.x<gridSize && gridPosition.y>=0 && gridPosition.y<gridSize)
             grid[gridPosition.x, gridPosition.y] = 0;
@@ -84,7 +92,7 @@ public class TerrainGenerator : MonoBehaviour
 
     private void GenerateMesh()
     {
-        Mesh mesh = new Mesh();
+        mesh = new Mesh();
         vertices.Clear();
         triangle.Clear();
 
@@ -93,8 +101,17 @@ public class TerrainGenerator : MonoBehaviour
         mesh.vertices = squareGrid.GetVertices();
         mesh.triangles = squareGrid.GetTriangles();
         filter.mesh = mesh;
+
+        GenerateCollider();
     }
 
+
+    void GenerateCollider()
+    {
+        if(filter.TryGetComponent(out MeshCollider collider))
+            collider.sharedMesh = mesh;
+        else filter.gameObject.AddComponent<MeshCollider>().sharedMesh = mesh;
+    }
 
     bool IsValidGridPosition(Vector2Int gridPosition)
     {
