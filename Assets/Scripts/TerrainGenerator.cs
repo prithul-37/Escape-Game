@@ -63,6 +63,8 @@ public class TerrainGenerator : MonoBehaviour
 
         worldPosition.z = 0;
 
+        worldPosition = transform.InverseTransformPoint(worldPosition);
+
         Vector2Int gridPosition = GetGridPositionFromWorldPosition(worldPosition);
 
         bool shouldGenerate = false;
