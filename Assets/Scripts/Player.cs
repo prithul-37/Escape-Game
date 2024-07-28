@@ -8,30 +8,17 @@ public class Player : MonoBehaviour
     private Rigidbody rb;
     private float thrust = 0.2f;
 
-    public int pointSize = 2;
-    public float[,] points;
+   
 
-    public float speed =0.1f;
+    public float speed = 0.1f;
 
     public int level = 1;
-    Vector2 direction;
 
-    int CheckPoint = 0;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        points = new float[pointSize,2];
 
-        if(level==1)
-        {
-            points[0, 0] = 9f;
-            points[0, 1] = -10.5f;
-
-            points[1, 0] = 18f;
-            points[1, 1] = -4.5f;
-
-        }
     }
 
 
@@ -39,24 +26,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        direction = new Vector2(points[CheckPoint, 0] - transform.position.x, points[CheckPoint, 1] - transform.position.y);
-        direction.Normalize();
-        rb.transform.Translate(direction * speed);
+        rb.AddForce(Vector2.right * speed, ForceMode.Force);
 
-        float dis = (points[CheckPoint, 0] - transform.position.x) * (points[CheckPoint, 0] - transform.position.x) + (points[CheckPoint, 1] - transform.position.y) * (points[CheckPoint, 1] - transform.position.y);
 
-        if (dis<3)
-        {
-            if(CheckPoint< pointSize)
-                CheckPoint++;
-        }
+        if(transform.position.x >= 9.5 && transform.position.x <=15.0)
+            rb.AddForce(Vector2.up * 0.2f, ForceMode.Impulse);
         
-        //print(CheckPoint);
-
-        /*if (Input.GetKey(KeyCode.A))
-            transform.Translate(Vector2.left * speed);
-        if (Input.GetKey(KeyCode.D))
-            transform.Translate(Vector2.right * speed);*/
     }
+
 
 }
