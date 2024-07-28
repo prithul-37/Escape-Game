@@ -30,7 +30,10 @@ public class TerrainGenerator : MonoBehaviour
 
     private float[,] grid;
 
+    private bool[,] isUsed;
+
     Mesh mesh;
+
 
     private void Awake()
     {
@@ -38,15 +41,19 @@ public class TerrainGenerator : MonoBehaviour
     }
     private void Start()
     {
+        
         mesh = new Mesh();
         Application.targetFrameRate = 60;
         grid = new float[gridSize,gridSize];
+
+        isUsed = new bool[gridSize,gridSize];
 
         for (int i = 0; i < grid.GetLength(0); i++)
         {
             for (int j = 0; j < grid.GetLength(1); j++)
             {
                 grid[i, j] = isoValue + .1f;
+                isUsed[i, j] = false;
             }
         }
 
@@ -69,6 +76,8 @@ public class TerrainGenerator : MonoBehaviour
 
         bool shouldGenerate = false;
 
+
+
         for(int i=gridPosition.x - brushRadius; i<= gridPosition.x + brushRadius; i++)
         {
             for(int j=gridPosition.y - brushRadius; j<= gridPosition.y + brushRadius; j++)
@@ -81,11 +90,16 @@ public class TerrainGenerator : MonoBehaviour
 
                 grid[currentGridPosition.x, currentGridPosition.y] -= factor;
 
+
                 shouldGenerate = true;
             }
         }
         if(shouldGenerate)
+        {
             GenerateMesh();
+
+        }
+            
 
         /*if(gridPosition.x>=0 && gridPosition.x<gridSize && gridPosition.y>=0 && gridPosition.y<gridSize)
             grid[gridPosition.x, gridPosition.y] = 0;
@@ -94,6 +108,7 @@ public class TerrainGenerator : MonoBehaviour
 
     private void GenerateMesh()
     {
+
         mesh = new Mesh();
         vertices.Clear();
         triangle.Clear();
@@ -146,7 +161,7 @@ public class TerrainGenerator : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    private void OnDrawGizmos()
+/*    private void OnDrawGizmos()
     {
 
         if(!EditorApplication.isPlaying) return;
@@ -162,7 +177,7 @@ public class TerrainGenerator : MonoBehaviour
                 Handles.Label(worldPos + Vector2.up*gridScale/3, grid[i,j].ToString());
             }
         }
-    }
+    }*/
 
 #endif
 }

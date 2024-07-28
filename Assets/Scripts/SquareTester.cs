@@ -63,7 +63,7 @@ public class SquareTester : MonoBehaviour
 
 
 
-    private void OnDrawGizmos()
+/*    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 
@@ -80,5 +80,5 @@ public class SquareTester : MonoBehaviour
         Gizmos.DrawSphere(bottomCenter, gridScale / 16);
         Gizmos.DrawSphere(leftCenter, gridScale / 16);
 
-    }
+    }*/
 }

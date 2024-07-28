@@ -18,8 +18,10 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) 
+        if(Input.GetMouseButtonDown(0))
+        {
             click = true;
+        }
         else if (Input.GetMouseButton(0) && click)
             Clicking();
         else if (Input.GetMouseButtonUp(0) && click) 
