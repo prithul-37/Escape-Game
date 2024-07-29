@@ -5,6 +5,7 @@ using UnityEngine;
 public class RightSense : MonoBehaviour
 {
     public Player player;
+    public Rigidbody rb;
 
     /*private void FixedUpdate()
     {
@@ -14,16 +15,22 @@ public class RightSense : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Wall")
+        if (other.tag == "Wall")
         {
-            player.RightGo = false;
+            player.goForward = false;
+            
+
+        }
+        else if(other.tag == "t")
+        {
+            rb.AddForce(transform.forward * -2f, ForceMode.Impulse);
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Wall")
         {
-            player.RightGo = true;
+            player.goForward = true;
         }
     }
 
