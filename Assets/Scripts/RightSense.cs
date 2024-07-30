@@ -23,7 +23,7 @@ public class RightSense : MonoBehaviour
         }
         else if(other.tag == "t")
         {
-            rb.AddForce(transform.forward * -2f, ForceMode.Impulse);
+            rb.AddForce(transform.forward * -1f, ForceMode.Impulse);
         }
     }
     private void OnTriggerExit(Collider other)
